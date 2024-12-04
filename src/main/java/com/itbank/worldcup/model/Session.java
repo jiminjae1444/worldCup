@@ -9,7 +9,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "session_data")
-public class SessionDTO {
+public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -19,7 +19,7 @@ public class SessionDTO {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserDTO user;  // 사용자 (외래키)
+    private User user;  // 사용자 (외래키)
 
     @Column(name = "session_date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)

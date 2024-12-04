@@ -8,7 +8,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "Imagefile")
-public class FileDTO {
+public class File {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

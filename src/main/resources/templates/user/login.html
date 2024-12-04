@@ -1,10 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+    }
 
+    .container {
+        max-width: 400px;
+        margin: 100px auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+
+    .input-group {
+        margin-bottom: 15px;
+    }
+
+    .input-group label {
+        display: block;
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 5px;
+    }
+
+    .input-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        box-sizing: border-box;
+    }
+
+    .input-group input:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+
+    .loginBtn {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .loginBtn:hover {
+        background-color: #0056b3;
+    }
+
+</style>
+<body>
+<!-- 헤더 인클루드 -->
+<div th:replace="~{header.html}"></div>
+
+<!-- 로그인 폼 -->
+<div class="container">
+    <h2>로그인</h2>
+    <form th:action="@{/login}" method="post">
+        <div class="input-group">
+            <label for="username">아이디</label>
+            <input type="text" id="username" name="username" placeholder="아이디를 입력하세요" required>
+        </div>
+        <div class="input-group">
+            <label for="password">비밀번호</label>
+            <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required>
+        </div>
+        <button type="submit" class="loginBtn">로그인하기</button>
+    </form>
+    <div class="footer">
+        <p>계정이 없으신가요? <a href="/signup">회원가입</a></p>
+    </div>
+</div>
 </body>
 </html>

@@ -1,7 +1,9 @@
 package com.itbank.worldcup.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -9,7 +11,9 @@ import java.util.Date;
 @Data
 @Table(name = "user_data")
 @Entity
-public class UserDTO {
+@AllArgsConstructor
+@NoArgsConstructor
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

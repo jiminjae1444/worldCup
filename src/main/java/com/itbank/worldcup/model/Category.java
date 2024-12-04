@@ -8,7 +8,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "category")
-public class CategoryDTO {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -21,7 +21,7 @@ public class CategoryDTO {
 
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "file_id" , nullable = false)
-    private FileDTO file;
+    private File file;
 
     @Column(name = "wcDate" , nullable = false)
     @Temporal(TemporalType.TIMESTAMP)

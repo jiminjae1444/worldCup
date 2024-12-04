@@ -8,14 +8,14 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "items")
-public class ItemsDTO {
+public class Items {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "file_id", nullable = false)
-    private FileDTO file;
+    private File file;
 
     @Column(name = "wiDate", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -27,7 +27,7 @@ public class ItemsDTO {
 
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "category_id", nullable = false)
-    private CategoryDTO category;
+    private Category category;
 
     @Column(name = "gender", nullable = false, length = 10)
     @Enumerated(EnumType.STRING)

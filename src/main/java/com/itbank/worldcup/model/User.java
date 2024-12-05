@@ -29,7 +29,7 @@ public class User {
     private Role role;
 
     @Column(nullable = false)
-    private boolean isApproved;
+    private boolean isApproved = false;  //기본값 false 승인대기 상태
 
     @Column(name="wdate" , nullable = false)
     @Temporal(TemporalType.TIMESTAMP)

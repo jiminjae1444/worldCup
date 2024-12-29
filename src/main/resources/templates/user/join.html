@@ -134,7 +134,7 @@
 <!-- 회원가입 폼 -->
 <div class="container">
     <h2>회원가입</h2>
-    <form id="joinForm" onsubmit="return validateForm(event)">
+    <form id="joinForm">
         <div class="input-group">
             <label for="username">아이디</label>
             <input type="text" id="username" name="username" placeholder="아이디를 입력하세요" required>
@@ -159,8 +159,17 @@
 </div>
 </body>
 <script>
-    async function duplicateHandler() {
+
+    // 페이지가 로드되었을 때 중복 체크 버튼에 클릭 이벤트 추가
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkUsernameBtn = document.getElementById('checkUsernameBtn')
+        checkUsernameBtn.addEventListener('click', duplicateHandler)
+    })
+
+    async function duplicateHandler(event) {
+        event.preventDefault()
         const username = document.getElementById('username').value;  // 아이디 값 가져오기
+        console.log(username)
         const usernameStatus = document.getElementById('usernameStatus'); // 상태 메시지 표시할 div
         // 유효한 아이디 입력 여부 체크
         if (!username) {
@@ -168,28 +177,29 @@
             usernameStatus.style.color = 'red'
             return
         }
-        const url = 'users/check'
+        const url = '/users/check'
         const opt = {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'  // JSON 형식으로 데이터 전송
+                'Content-Type': 'application/json;charset=UTF-8'  // JSON 형식으로 데이터를 보냄
             },
-            body: JSON.stringify({username: username})  // JSON 형식으로 아이디 전송
+            body: JSON.stringify({ username })  // 아이디를 JSON으로 변환해서 전송
         }
         const result = await fetch(url,opt).then(resp=>resp.json())
         if (result.success) {
             usernameStatus.textContent = result.message  // '사용 가능한 아이디입니다.'
             usernameStatus.style.color = result.color  // 'green' 색상 적용
+            usernameStatus.style.fontSize='14px'
         } else {
             usernameStatus.textContent = result.message  // '이미 사용 중인 아이디입니다.'
             usernameStatus.style.color = result.color  // 'red' 색상 적용
+            usernameStatus.style.fontSize='14px'
 
             // 아이디 필드 초기화
             document.getElementById('username').value = ''  // 입력 필드 비우기
             document.getElementById('username').focus()  // 다시 아이디 필드에 포커스 주기
         }
     }
-
     // 비밀번호 유효성 검사
     function validatePassword(password) {
         const minLength = 8
@@ -199,9 +209,6 @@
         const upperChar = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         const lowerChar = 'abcdefghijklmnopqrstuvwxyz'
 
-        const checkUsernameBtn = document.getElementById('checkUsernameBtn')
-
-        checkUsernameBtn.addEventListener('click',duplicateHandler)
         // 조건 1: 길이 체크
         if (password.length < minLength) {
             isValid = false
@@ -308,17 +315,21 @@
 
         // 폼 유효성 검사 완료 후 서버로 데이터 전송
         const formData = new FormData(event.target)
-        const url = '/users/join'
+        const url = '/users/joins'
         const opt = {
             method: 'POST',
             body: formData,
         }
-
         const result = await fetch(url, opt).then(resp => resp.json())
         if (result.success) {
             alert('회원가입 성공!')
             window.location.href = '/login' // 로그인 페이지로 리다이렉트
+        }else{
+            alert(result.error)
         }
     }
+
+    const joinForm = document.getElementById('joinForm')
+    joinForm.addEventListener('submit',validateForm)
 </script>
 </html>

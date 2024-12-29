@@ -1,11 +1,11 @@
 package com.itbank.worldcup.mapper;
 
 import com.itbank.worldcup.model.User;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-@Repository
+@Mapper
 public interface UserMapper {
     List<User> getUnapprovedUsers();
 }

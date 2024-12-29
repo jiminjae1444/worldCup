@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>카테고리 수정</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7fa;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 30px 20px;
+    }
+
+    .form-container {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-container h2 {
+      margin-bottom: 20px;
+      color: #333;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      font-size: 1.1em;
+      font-weight: bold;
+      color: #555;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-group button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      color: #fff;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .form-group button:hover {
+      background-color: #0056b3;
+    }
+
+    .form-group .back-btn {
+      background-color: #ddd;
+      text-align: center;
+      padding: 10px;
+      border-radius: 5px;
+      display: inline-block;
+      margin-top: 10px;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .form-group .back-btn:hover {
+      background-color: #bbb;
+    }
+
+    /* 이미지 미리보기 스타일 */
+    .image-preview {
+      display: none;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .image-preview img {
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="form-container">
+    <h2>카테고리 수정</h2>
+
+    <form id="updateForm" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="cName">카테고리 이름</label>
+        <input type="text" id="cName" name="cName" th:value="${category.cName}" required />
+      </div>
+      <div class="form-group">
+        <label for="description">설명</label>
+        <textarea id="description" name="description" th:text="${category.description}"required></textarea>
+      </div>
+
+      <!-- 기존 이미지 미리보기 -->
+      <div class="form-group">
+        <label>현재 이미지</label>
+        <div class="image-preview" id="currentImagePreview">
+          <img th:src="@{'/upload/worldcup/category/' + ${category.file != null ? category.file.storedFileName : ''}}" alt="현재 이미지" />
+          <span th:text="${category.file.originalFileName}"></span>
+        </div>
+      </div>
+
+      <!-- 새 이미지 파일 업로드 -->
+      <div class="form-group">
+        <label for="file">새 파일 업로드 (선택)</label>
+        <input type="file" id="file" name="file" />
+      </div>
+
+      <!-- 이미지 업로드 시 미리보기 -->
+      <div class="form-group image-preview" id="imagePreview">
+        <h4>미리보기:</h4>
+        <img id="previewImage" src="" alt="미리보기 이미지" />
+      </div>
+
+      <div class="form-group">
+        <button type="submit" th:data-category-id="${category.id}">카테고리 수정</button>
+      </div>
+      <div class="form-group">
+        <a href="/worldcup/list" class="back-btn">카테고리 목록으로 돌아가기</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // 기존의 이미지 URL을 미리보기로 표시
+  const currentImageUrl = "${category.fileUrl}"  // 서버에서 파일 URL을 가져와야 합니다.
+  const currentImagePreview = document.getElementById("currentImagePreview")
+  if (currentImageUrl) {
+    currentImagePreview.style.display = "block" // 기존 이미지 표시
+  }
+
+  // 파일 선택 시 미리보기 이미지를 업데이트하는 함수
+  document.getElementById("file").addEventListener("change", function(event) {
+    const file = event.target.files[0]  // 선택된 파일
+    if (file) {
+      // URL.createObjectURL을 사용하여 파일 URL을 생성
+      const imageURL = URL.createObjectURL(file)
+
+      const imagePreview = document.getElementById("imagePreview")
+      const previewImage = document.getElementById("previewImage")
+
+      // 미리보기 이미지 업데이트
+      previewImage.src = imageURL  // 생성된 URL을 미리보기 이미지의 src로 설정
+      imagePreview.style.display = "block"  // 미리보기 이미지가 표시되도록 설정
+    }
+  })
+  const updateForm = document.getElementById('updateForm')
+
+  async function updateHandler(event) {
+    event.preventDefault()
+    const id = this.querySelector('button[type="submit"]').getAttribute('data-category-id')
+    console.log(id)
+    const url = `/categories/edit/${ id}`
+    const opt = {
+      method:'POST',
+      body:new FormData(event.target)
+    }
+    const result = await fetch(url,opt).then(resp=>resp.json())
+    if (result.success){
+      alert(result.message)
+      location.reload()
+    }else{
+      alert(result.message)
+      location.reload()
+    }
+  }
+  updateForm.addEventListener('submit',updateHandler)
+</script>
+
+</body>
+</html>

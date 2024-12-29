@@ -18,7 +18,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
+    @Column(nullable = false , unique = true)
     private String username;
 
     @Column(nullable = false)
@@ -26,7 +26,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private Role role;
+    private Role role = Role.USER;  // 기본값 설정
 
     @Column(nullable = false)
     private boolean isApproved = false;  //기본값 false 승인대기 상태

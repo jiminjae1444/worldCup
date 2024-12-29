@@ -176,7 +176,6 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', async function() {
-    // 서버에 GET 요청하여 승인 대기 목록 가져오기
     await fetch('/users/approveList')
             .then(response => response.json())  // 응답을 JSON으로 파싱
             .then(data => {

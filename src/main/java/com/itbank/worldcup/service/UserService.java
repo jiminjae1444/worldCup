@@ -4,11 +4,13 @@ import com.itbank.worldcup.mapper.UserMapper;
 import com.itbank.worldcup.model.User;
 import com.itbank.worldcup.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -16,10 +18,12 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
 
-    public int joinUser(User user) {
-        if (user != null) {
+    public int joinUser(String username, String password) {
+        if (username != null && password != null) {
             //비밀번호 암호화
-            String encodedPassword = passwordEncoder.encode(user.getPassword());
+            String encodedPassword = passwordEncoder.encode(password);
+            User user = new User();
+            user.setUsername(username);
             user.setPassword(encodedPassword);
             // 유효성 검사 통과 후 DB 저장 등의 로직
             userRepository.save(user);
@@ -29,7 +33,7 @@ public class UserService {
     }
 
     public boolean isUsernameDuplicated(String username) {
-        return userRepository.findByUsername(username) != null;
+        return userRepository.findByUsername(username).isPresent();
     }
 
 

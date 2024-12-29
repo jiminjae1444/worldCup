@@ -13,9 +13,12 @@ public class Items {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "name")
+    private String name;
+
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "file_id", nullable = false)
-    private File file;
+    private FileEntity file;
 
     @Column(name = "wiDate", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)

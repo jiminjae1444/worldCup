@@ -8,7 +8,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "Imagefile")
-public class File {
+public class FileEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -27,10 +27,9 @@ public class File {
 
     @Column(name = "wfDate", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private java.util.Date wfDate = new java.util.Date();  //기본값을 현재 시간으로
+    private Date wfDate = new Date();  //기본값을 현재 시간으로
 
-    @Column(name = "ufDate")
+    @Column(name = "ufDate" , nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date ufDate;
-
 }

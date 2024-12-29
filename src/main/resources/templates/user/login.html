@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>로그인</title>
 </head>
 <style>
     body {
@@ -67,6 +67,10 @@
         background-color: #0056b3;
     }
 
+    .footer {
+        text-align: center;
+        margin-top: 15px;
+    }
 </style>
 <body>
 <!-- 헤더 인클루드 -->
@@ -86,8 +90,16 @@
         </div>
         <button type="submit" class="loginBtn">로그인하기</button>
     </form>
+
+    <!-- 로그인 실패 시 JavaScript로 alert 표시 -->
+    <div th:if="${param.error}">
+        <script>
+            alert('로그인 실패! 아이디나 비밀번호가 일치하지 않습니다.');
+        </script>
+    </div>
+
     <div class="footer">
-        <p>계정이 없으신가요? <a href="/signup">회원가입</a></p>
+        <p>계정이 없으신가요? <a href="/user/join">회원가입</a></p>
     </div>
 </div>
 </body>

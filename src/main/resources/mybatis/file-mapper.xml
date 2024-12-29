@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itbank.worldcup.mapper.FileMapper">
+
+    <insert id="insertFile">
+        INSERT INTO Imagefile (original_File_Name, stored_File_Name, file_Type, file_Size,wf_Date)
+        VALUES (#{originalFileName}, #{storedFileName}, #{fileType}, #{fileSize},#{wfDate})
+    </insert>
+
+    <update id="updateFile">
+        UPDATE Imagefile
+        SET
+        original_File_Name = #{originalFileName},
+        stored_File_Name = #{storedFileName},
+        file_Type = #{fileType},
+        file_Size = #{fileSize},
+        uf_Date = sysdate
+        WHERE id = #{id}
+    </update>
+</mapper>

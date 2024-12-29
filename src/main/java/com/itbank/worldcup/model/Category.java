@@ -13,21 +13,21 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false , length = 100)
+    @Column(name = "cName", nullable = false, length = 100)
     private String cName;
 
     @Column(nullable = false)
     private String description;
 
     @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "file_id" , nullable = false)
-    private File file;
+    @JoinColumn(name = "fileId" , nullable = false)
+    private FileEntity file;
 
     @Column(name = "wcDate" , nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private java.util.Date wcDate = new java.util.Date();  //기본값을 현재 시간으로
 
-    @Column(name = "ucDate" , nullable = false)
+    @Column(name = "ucDate" , nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date ucDate;
 }

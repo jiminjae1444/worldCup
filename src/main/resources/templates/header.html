@@ -1,18 +1,51 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>WorldCup</title>
+    <style>
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        .user-info span {
+            margin-right: 10px;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+    </style>
 </head>
 <body>
 <header>
     <div class="logo">
         <h1>웹사이트 로고</h1>
     </div>
+    <div class="user-info" sec:authorize="isAuthenticated()">
+        <span th:text="${#authentication.name}">사용자</span>
+        <th:block th:switch="${#authentication.authorities[0].authority}">
+            <span th:case="'ROLE_ADMIN'">관리자</span>
+            <span th:case="'ROLE_USER'">사용자</span>
+        </th:block>
+        님<a href="/logout">로그아웃</a>
+    </div>
+
+    <div class="user-info" sec:authorize="!isAuthenticated()">
+        <a href="/user/login">로그인</a>
+    </div>
+
     <nav>
         <ul>
             <li><a href="/home">홈</a></li>
-            <li><a href="/user/login">로그인</a></li>
             <li><a href="#">연락처</a></li>
         </ul>
     </nav>
